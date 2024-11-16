@@ -1,6 +1,8 @@
 TARGET = main
-SRCS = main.c btree.c
 BIN_DIR = bin
+SRC_DIR = src
+
+SRCS = $(SRC_DIR)/btree.c main.c
 
 all:
 	@mkdir -p $(BIN_DIR)  
