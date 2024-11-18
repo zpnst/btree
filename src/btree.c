@@ -23,6 +23,7 @@ btree btree_new(int degree) {
 
 void btree_free(btree *tree) {
     btree_node_free(tree->root, tree);
+    tree->root = NULL;
 }
 
 void *btree_search(btree tree, int key) {
@@ -91,7 +92,7 @@ btree_node *btree_new_node_item(btree tree, int key, void *value) {
     new_tree->keys[0] = key;
     new_tree->values[0] = value;
 
-    new_tree->keys_number += 1;
+    new_tree->keys_number = 1;
 
     return new_tree;
 }
@@ -384,6 +385,8 @@ void btree_node_slpit(btree_node *ctx, btree tree, btree_node *new_node, int idx
    new_node->childer_number = 2;
 
    // ok! we just update new node pointer
+
+   btree_node_free_shallow(tmp_node);
 }
 
 btree_node *btree_node_get_inorder_predecessor(btree_node *ctx, btree tree, int idx) {
