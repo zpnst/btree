@@ -22,6 +22,7 @@ typedef struct btree {
 
 // BTREE 
 btree btree_new(int degree);
+
 void btree_free(btree *tree);
 void btree_insert(btree *tree, int key, void *value);
 void btree_delete(btree * tree, int key);
@@ -32,10 +33,9 @@ void *btree_search(btree tree, int key);
 // BTREE_NODE 
 btree_node *btree_new_node(btree tree);
 btree_node *btree_new_node_item(btree tree, int key, void *value);
-
 btree_node *btree_node_search(btree_node *ctx, int key, int *idx);
 btree_node *btree_node_insert(btree_node *ctx, btree tree, int key, void *value);
-btree_node *btree_node_get_inorder_predecessor(btree_node *ctx, btree tree, int idx);
+btree_node *btree_node_get_inorder_predecessor(btree_node *ctx, int idx);
 
 int btree_node_delete(btree_node *ctx, btree tree, int key);
 

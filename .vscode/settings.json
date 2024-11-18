@@ -1,6 +1,11 @@
 {
     "files.associations": {
         "array": "c",
-        "string_view": "c"
+        "string_view": "c",
+        "btree.h": "c",
+        "stdio.h": "c",
+        "stddef.h": "c",
+        "limits.h": "c",
+        "string.h": "c"
     }
 }
