@@ -20,7 +20,7 @@ void handle_searching_result(void *searching_result, int key) {
 
 
 void create_png_image_visualization(const char *filename_dot, const char *filename_png) {
-    char command[512]; // Буфер для команды
+    char command[512];
 
     int ret = snprintf(command, sizeof(command), "dot -Tpng %s -o %s", filename_dot, filename_png);
 
