@@ -6,6 +6,11 @@
         "stdio.h": "c",
         "stddef.h": "c",
         "limits.h": "c",
-        "string.h": "c"
+        "string.h": "c",
+        "__file.h": "c",
+        "file.h": "c",
+        "algorithm": "c",
+        "visualize.h": "c",
+        "stdlib.h": "c"
     }
 }

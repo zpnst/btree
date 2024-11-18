@@ -1,0 +1,18 @@
+digraph BTree {
+    node [shape=record, height=.1];
+    node0x55a351c6a3e0 [label="<f0>65"];
+    "node0x55a351c6a3e0":f0 -> "node0x55a351c6a340";
+    node0x55a351c6a340 [label="<f0>25"];
+    "node0x55a351c6a340":f0 -> "node0x55a351c6a2a0";
+    node0x55a351c6a2a0 [label="<f0>8|<f1>21|<f2>23"];
+    "node0x55a351c6a340":f1 -> "node0x55a351c6a480";
+    node0x55a351c6a480 [label="<f0>37"];
+    "node0x55a351c6a3e0":f1 -> "node0x55a351c6a7a0";
+    node0x55a351c6a7a0 [label="<f0>245|<f1>564"];
+    "node0x55a351c6a7a0":f0 -> "node0x55a351c6a660";
+    node0x55a351c6a660 [label="<f0>67|<f1>77|<f2>89"];
+    "node0x55a351c6a7a0":f1 -> "node0x55a351c6a5c0";
+    node0x55a351c6a5c0 [label="<f0>466"];
+    "node0x55a351c6a7a0":f2 -> "node0x55a351c6a700";
+    node0x55a351c6a700 [label="<f0>567|<f1>6589|<f2>9543"];
+}

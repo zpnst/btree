@@ -1,67 +1,77 @@
 #include "src/btree.h"
+#include "visualize/visualize.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-void printBtree(btree_node *ctx) {
-    printf("(");
+#define DELETELEN 7
+#define INSERTLEN 17
 
-    for (int iter = 0; iter < ctx->keys_number; iter += 1) {
-        if (ctx->childer_number) {
-            printBtree(ctx->children[iter]);
-        }
-        printf(" %d ", ctx->keys[iter]);
+#define BTREE_DEGREE 4
+
+void handle_searching_result(void *searching_result, int key) {
+    if (searching_result) {
+        printf("result for %d is: %c\n", key, *(char*)searching_result);
+    } else {
+        printf("result: NULL");
+    }
+}
+
+
+void create_png_image_visualization(const char *filename_dot, const char *filename_png) {
+    char command[512]; // Буфер для команды
+
+    int ret = snprintf(command, sizeof(command), "dot -Tpng %s -o %s", filename_dot, filename_png);
+
+    if (ret < 0 || ret >= sizeof(command)) {
+        fprintf(stderr, "Error in command formation\n");
+        return;
     }
 
-    if (ctx->childer_number) { // print the last child
-        printBtree(ctx->children[ctx->keys_number]);
+    int result = system("dot -Tpng data/btree_after_insertation.dot -o btree.png");
+    if (result == -1) {
+        perror("Error, exit code: -1");
+        return;
+    } else if (result != 0) {
+        fprintf(stderr, "Error, exit code: %d\n", result);
+        return;
     }
-
-    printf(")");
 }
 
 int main(void) {
 
-    btree tree = btree_new(3);
+    btree tree = btree_new(BTREE_DEGREE);
 
-#define INSERTLEN 20
-
-    int insert_elements[INSERTLEN] = {25, 8, 37, 55, 95, 27, 88, 13, 29, 42, 51, 72, 100, 105, 90, 92, 65, 49, 45, 47};
-    char insert_vals[INSERTLEN] = {};
-
-    int i;
-    for (i = 0; i < INSERTLEN; i++) {   
-        insert_vals[i] = (char)insert_elements[i];
-        btree_insert(&tree, insert_elements[i], &insert_vals[i]);
-    }
-    printBtree(tree.root);
-    printf("\n\n");
-
-    void *searching_result = btree_search(tree, 65);
-    if (searching_result) {
-        printf("result: %c", *(char*)searching_result);
-    } else {
-        printf("result: NULL");
+    char insert_values[INSERTLEN] = {};
+    int insert_keys[INSERTLEN] = {25, 8, 37, 245, 564, 21, 466, 567, 67, 77, 65, 6589, 9543, 245, 23, 245, 89};
+    
+    for (int iter = 0; iter < INSERTLEN; iter += 1) {   
+        insert_values[iter] = (char)insert_keys[iter];
+        btree_insert(&tree, insert_keys[iter], &insert_values[iter]);
     }
 
-    printf("\n\n");
+    void *searching_result_A = btree_search(tree, 65); // A 65 in ASCII table
+    void *searching_result_M = btree_search(tree, 77); // M 77 in ASCII table
 
-#define DELETELEN 16
+    handle_searching_result(searching_result_A, 65);
+    handle_searching_result(searching_result_M, 77);
 
-    int deleteElements[DELETELEN] = {27, 29, 88, 100, 51, 90, 37, 95, 72, 42, 92, 8, 55, 13, 105, 25};
-    for (i = 0; i < DELETELEN - 1; i++)
-    {
-        btree_delete(&tree, deleteElements[i]);
-        printf("-%04d: ", deleteElements[i]);
-        printBtree(tree.root);
-        printf("\n");
+
+    write_btree_txt_file(tree.root, "data/btree_after_insertation.txt");
+    write_btree_dot_file(tree.root, "data/btree_after_insertation.dot");
+    create_png_image_visualization("data/btree_after_insertation.dot", "image/btree_after_insertation.png");
+
+
+
+    int deleteElements[DELETELEN] = {567, 21, 25, 8, 89, 23, 245};
+    for (int iter = 0; iter < DELETELEN;  iter++) {
+        btree_delete(&tree, deleteElements[iter]);
     }
 
-    btree_delete(&tree, deleteElements[i]);
-    printf("-%04d: ", deleteElements[i]);
-    printBtree(tree.root);
-    printf("\n");
+    write_btree_txt_file(tree.root, "data/btree_after_deletion.txt");
+    write_btree_dot_file(tree.root, "data/btree_after_deletion.dot");
+    create_png_image_visualization("data/btree_after_deletion.dot", "image/btree_after_deletion.png");
 
     btree_free(&tree);
 
