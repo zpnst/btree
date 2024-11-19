@@ -36,7 +36,7 @@ void write_btree_dot_file(btree_node *root, const char *filename) {
     unsigned long error = snprintf(data_filename, sizeof(data_filename), "%s/%s.dot", DATA_DIR, filename);
 
     if (error < 0 || error >= sizeof(data_filename)) {
-        fprintf(stderr, "Error in generating data_filename\n");
+        fprintf(stderr, "Error in generating dot vizualization\n");
         return;
     }
 
@@ -46,7 +46,7 @@ void write_btree_dot_file(btree_node *root, const char *filename) {
         return;
     }
 
-    fprintf(output_file, "digraph BTree {\n");
+    fprintf(output_file, "digraph btree {\n");
     fprintf(output_file, "    node [shape=record, height=.1];\n");
     construct_btree_dot_file(root, output_file);
     fprintf(output_file, "}\n");
@@ -84,7 +84,7 @@ void write_btree_txt_file(btree_node *root, const char *filename) {
     unsigned long error = snprintf(data_filename, sizeof(data_filename), "%s/%s.txt", DATA_DIR, filename);
 
     if (error < 0 || error >= sizeof(data_filename)) {
-        fprintf(stderr, "Error in generating data_filename\n");
+        fprintf(stderr, "Error in generating txt vizualization\n");
         return;
     }
 
@@ -109,14 +109,14 @@ void write_btree_png_image(const char *filename) {
     error = snprintf(data_filename_dot, sizeof(data_filename_dot), "%s/%s.dot", DATA_DIR, filename);
 
     if (error < 0 || error >= sizeof(data_filename_dot)) {
-        fprintf(stderr, "Error in generating data_filename_dot\n");
+        fprintf(stderr, "Error while read dot file\n");
         return;
     }
 
     error = snprintf(data_filename_png, sizeof(data_filename_png), "%s/%s.png", IMAGE_DIR, filename);
 
     if (error < 0 || error >= sizeof(data_filename_png)) {
-        fprintf(stderr, "Error in generating data_filename_png\n");
+        fprintf(stderr, "Error in generating data png image\n");
         return;
     }
 
@@ -129,10 +129,10 @@ void write_btree_png_image(const char *filename) {
 
     int result = system(generating_command);
     if (result == -1) {
-        perror("Error, exit code: -1");
+        perror("Error, exit code: -1 while exec system()");
         return;
     } else if (result != 0) {
-        fprintf(stderr, "Error, exit code: %d\n", result);
+        fprintf(stderr, "Error while exec system(), exit code: %d\n", result);
         return;
     }
 }

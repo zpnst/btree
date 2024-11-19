@@ -18,9 +18,9 @@ btree_node *btree_new_node(btree tree) {
 
 btree_node *btree_new_node_item(btree tree, int key, void *value) {
     btree_node *new_tree = btree_new_node(tree);
+
     new_tree->keys[0] = key;
     new_tree->values[0] = value;
-
     new_tree->keys_number = 1;
 
     return new_tree;

@@ -1,6 +1,6 @@
 #include "../btree.h"
 
-int btree_node_delete(btree_node *ctx, btree tree, int key) {
+error_t btree_node_delete(btree_node *ctx, btree tree, int key) {
     int idx = 0;
 
     // simply find the position
@@ -41,11 +41,11 @@ int btree_node_delete(btree_node *ctx, btree tree, int key) {
         if (ctx->childer_number) {
             return btree_node_delete(ctx->children[idx], tree, key);
         } else {
-            // no more children, failrd to find target
-            return -1;
+            // no more children, faild to find target
+            return ERROR_KEY_NOT_FOUND;
         }
     }
-    return 0;
+    return ERROR_NONE;
 }
 
 void btree_node_rebalance(btree_node *ctx, btree tree, int key) {

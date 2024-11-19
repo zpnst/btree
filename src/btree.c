@@ -1,6 +1,7 @@
 #include "btree.h"
 
 #include <math.h>
+#include <stdio.h>
 #include <stddef.h> // for NULL macros
 
 
@@ -40,10 +41,13 @@ void btree_insert(btree *tree, int key, void *value) {
     }
 }
 
-
 void btree_delete(btree * tree, int key) {
     if (tree->root) {
-        btree_node_delete(tree->root, *tree, key);
+        error_t error_code = btree_node_delete(tree->root, *tree, key);
+        if (error_code != ERROR_NONE) {
+            // there is no such key, just continue
+            return;
+        }
         if (!tree->root->keys_number) { // tree will shrink if there are no keys in root
             btree_node *previous_root = tree->root;
             tree->root = NULL;
