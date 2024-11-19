@@ -20,7 +20,7 @@ DEBUG_FLAGS = -g3 -ggdb
 LDFLAGS = -lm
 
 # DEFAULT TARGET
-all: $(BIN_DIR)/$(TARGET)
+all: clean $(BIN_DIR)/$(TARGET)
 
 # BTREE COMPILATION TARGET
 $(BIN_DIR)/$(TARGET): $(SRCS)

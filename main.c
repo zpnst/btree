@@ -8,7 +8,7 @@
 #define DELETELEN 7
 #define INSERTLEN 17
 
-#define BTREE_DEGREE 4
+#define BTREE_DEGREE 3
 
 void handle_searching_result(void *searching_result, int key) {
     if (searching_result) {
@@ -18,33 +18,12 @@ void handle_searching_result(void *searching_result, int key) {
     }
 }
 
-
-void create_png_image_visualization(const char *filename_dot, const char *filename_png) {
-    char command[512];
-
-    int ret = snprintf(command, sizeof(command), "dot -Tpng %s -o %s", filename_dot, filename_png);
-
-    if (ret < 0 || ret >= sizeof(command)) {
-        fprintf(stderr, "Error in command formation\n");
-        return;
-    }
-
-    int result = system("dot -Tpng data/btree_after_insertation.dot -o btree.png");
-    if (result == -1) {
-        perror("Error, exit code: -1");
-        return;
-    } else if (result != 0) {
-        fprintf(stderr, "Error, exit code: %d\n", result);
-        return;
-    }
-}
-
 int main(void) {
 
     btree tree = btree_new(BTREE_DEGREE);
 
     char insert_values[INSERTLEN] = {};
-    int insert_keys[INSERTLEN] = {25, 8, 37, 245, 564, 21, 466, 567, 67, 77, 65, 6589, 9543, 245, 23, 245, 89};
+    int insert_keys[INSERTLEN] = {56, 11, 46, 9, 12, 456, 65, 90, 16, 34, 445, 4567, 77, 674, 1245, 245, 67};
     
     for (int iter = 0; iter < INSERTLEN; iter += 1) {   
         insert_values[iter] = (char)insert_keys[iter];
@@ -58,20 +37,24 @@ int main(void) {
     handle_searching_result(searching_result_M, 77);
 
 
-    write_btree_txt_file(tree.root, "data/btree_after_insertation.txt");
-    write_btree_dot_file(tree.root, "data/btree_after_insertation.dot");
-    create_png_image_visualization("data/btree_after_insertation.dot", "image/btree_after_insertation.png");
+    const char *btree_after_deletion = "btree_after_deletion";
+    const char *btree_after_insertation = "btree_after_insertation";
 
 
+    write_btree_txt_file(tree.root, btree_after_insertation);
+    write_btree_dot_file(tree.root, btree_after_insertation);
+    write_btree_png_image(btree_after_insertation);
 
-    int deleteElements[DELETELEN] = {567, 21, 25, 8, 89, 23, 245};
+
+    int deleteElements[DELETELEN] = {456, 46, 65, 245, 4567, 67, 11};
     for (int iter = 0; iter < DELETELEN;  iter++) {
         btree_delete(&tree, deleteElements[iter]);
     }
 
-    write_btree_txt_file(tree.root, "data/btree_after_deletion.txt");
-    write_btree_dot_file(tree.root, "data/btree_after_deletion.dot");
-    create_png_image_visualization("data/btree_after_deletion.dot", "image/btree_after_deletion.png");
+
+    write_btree_txt_file(tree.root, btree_after_deletion);
+    write_btree_dot_file(tree.root, btree_after_deletion);
+    write_btree_png_image(btree_after_deletion);
 
     btree_free(&tree);
 

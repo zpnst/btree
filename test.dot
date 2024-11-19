@@ -1,0 +1,8 @@
+digraph G {
+    // Определение узлов
+    node1 [label="Node 1"];
+    node2 [label="Node 2"];
+
+    // Определение ребер
+    node1 -> node2;
+}

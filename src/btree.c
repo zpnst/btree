@@ -11,7 +11,7 @@ btree btree_new(int degree) {
 
     btree new_btree = {
         .degree = degree, 
-        .min_degree = ceilf((float)degree / 2.0f), 
+        .min_degree = (int)ceilf((float)degree / 2.0f), 
         .root = NULL
     };
     return new_btree;
