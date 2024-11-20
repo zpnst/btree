@@ -2,7 +2,7 @@
 
 #include <stdlib.h>
 
-btree_node *btree_new_node(btree tree) {
+btree_node *btree_new_node(btree tree) { 
     btree_node *new_tree = (btree_node*)malloc(sizeof(btree_node));
 
     new_tree->keys_number = 0;
@@ -27,7 +27,7 @@ btree_node *btree_new_node_item(btree tree, int key, void *value) {
 }
 
 void btree_node_free(btree_node *ctx, btree *tree) {
-    if (ctx) {
+    if (ctx) { // recursive memory release
         for (int iter = 0; iter < ctx->childer_number; iter += 1) {
             btree_node_free(ctx->children[iter], tree);
         }

@@ -11,7 +11,7 @@ error_t btree_node_delete(btree_node *ctx, btree tree, int key) {
     if (idx < ctx->keys_number && ctx->keys[idx] == key) {
         // we found key to delete!
         if (!ctx->childer_number) {
-            // so key to deelte present in leaf
+            // so, key to delete present in leaf
             // .. left shift to cover up
             for (int jter = idx; jter < ctx->keys_number - 1; jter += 1) {
                 btree_move_kv(ctx, jter + 1, ctx, jter); // left shift!
@@ -66,11 +66,7 @@ void btree_node_rebalance(btree_node *ctx, btree tree, int key) {
     // rebalance starting in child (go as deep as possible as first!)
     btree_node_rebalance(ctx->children[idx], tree, key);
 
-    
-
     /* 
-        at this line of code we have something like that because at leaf nodes we have only return instruction
-
         EX degree --> 5 ==> ((min degree - 1) ~ median index) = ceil(5/2) - 1 = 3 - 1 = 2
 
 
@@ -80,8 +76,6 @@ void btree_node_rebalance(btree_node *ctx, btree tree, int key) {
                            /   |               /   |  \
                     
         let's consider that after deletion left child of ctx not still maintains B-tree rules, because it have only one element with min degree = 2
-        
-
     */
     if (ctx->children[idx]->keys_number < tree.min_degree - 1) { 
 
@@ -224,7 +218,6 @@ void btree_node_rebalance(btree_node *ctx, btree tree, int key) {
 
             /*
                 EX:
-
                                           [(    a    ,    b    ,    c    ,    d    )] <-- this is ctx node!
                                            /          \
                 left sibling --> [(e, f, (), ())]   [(g, (), (), ())] <-- deficient node
@@ -290,9 +283,7 @@ void btree_node_rebalance(btree_node *ctx, btree tree, int key) {
 
             // that's it!
             // .. We don't need the right one anymore! let's delete it
-
             btree_node_free_shallow(right);
-
         }
     }
 }

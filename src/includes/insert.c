@@ -8,7 +8,7 @@ btree_node *btree_node_insert(btree_node *ctx, btree tree, int key, void *value)
     // find position
     int iter = 0;
 
-    // get position to insert a new unit 
+    // get position to insert a new value 
     while (iter < ctx->keys_number && key > ctx->keys[iter]) {
         iter += 1;
     }
@@ -120,7 +120,7 @@ void btree_node_slpit(btree_node *ctx, btree tree, btree_node *new_node, int idx
         EX degree --> 5 ==> ((min degree - 1) ~ median index) = ceil(5/2) - 1 = 3 - 1 = 2
         .. m - median, @, #, & - some values, ei - element to insert
 
-        0) - ctx node --> [(@, #, m, &)]
+        0) - EX ctx node --> [(@, #, m, &)]
 
         EX: i = 0 (index of ei)
         1) - if ei index < m index --> (ei, @, #, m, &) --> # is new median!! so, we nned to pop up # and shift m and other units after that
@@ -180,7 +180,7 @@ void btree_node_slpit(btree_node *ctx, btree tree, btree_node *new_node, int idx
         } // after loop [(@, #, &, &)]
 
         btree_move_kv(new_node, 0, ctx, idx - 1); // idx - 1 because we pop up the medium
-        // [(@, #, ei, &)]
+        // aftre btree_move_kv [(@, #, ei, &)]
 
     // third case (new node is the medium)
     } else { 
@@ -199,7 +199,7 @@ void btree_node_slpit(btree_node *ctx, btree tree, btree_node *new_node, int idx
     /*
                             [(    #    ,    ()    ,    ()    ,    ()    )] <-- this is new node <(0_0)>
                             /        \
-    this is ctx --> [(ei, @, m, &)]   [((), (), (), ())] <-- this is new node right child(child[1])
+    this is ctx --> [(ei, @, m, &)]   [((), (), (), ())] <-- this is new node's right child
                     /   |  |   |  \
                         e.t.c
     */
@@ -214,7 +214,7 @@ void btree_node_slpit(btree_node *ctx, btree tree, btree_node *new_node, int idx
     /*
                             [(    #    ,    ()    ,    ()    ,    ()    )] <-- this is new node <(0_0)>
                             /        \
-    this is ctx --> [(ei, @, 0, 0)]   [(m, &, (), ())] <-- this is new node right child(child[1])
+    this is ctx --> [(ei, @, 0, 0)]   [(m, &, (), ())] <-- this is new node's right child
                     /   |  |   |  \
                         e.t.c
     */
@@ -233,17 +233,17 @@ void btree_node_slpit(btree_node *ctx, btree tree, btree_node *new_node, int idx
                 /*
                         [(    #    ,    ()    ,    ()    ,    ()    )] <-- this is new node <(0_0)>
                         /         \
-                [(ei, @, m, &)]   [(m, &, (), ())]
-                /   |  |   |  \ /   |  \
+                [(ei, @, 0, 0)]   [(m, &, (), ())]
+                /  |  \           /   |  \
                     e.t.c
                 */
             
-            // right shift children to the left side (because all units was shifted to the right....)
+            // right shift children to the left side (because all values was shifted to the right....)
             for (int jter = tree.degree - 1; jter > idx + 1; jter -= 1) {
                 new_node->children[0]->children[jter] = new_node->children[0]->children[jter - 1];
             }
 
-            // insert temporary child (we just update children from ei (new unit) at the index 0 in out EX case, because before at the index 0 was @ and @'s children...)
+            // insert temporary child (we just update children from ei (new value) at the index 0 in our EX case, because before at the index 0 was @ and @'s children...)
             new_node->children[0]->children[idx + 1] = tmp_node->children[1];
         } else { // only one else condition
             

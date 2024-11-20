@@ -3,13 +3,13 @@
 #include <stdlib.h>
 #include <stddef.h> // for NULL macros
 
-void btree_move_kv(btree_node *in, int in_idx, btree_node *out, int out_idx) {
-    out->keys[out_idx] = in->keys[in_idx];
+void btree_move_kv(btree_node *in, int in_idx, btree_node *out, int out_idx) { 
+    out->keys[out_idx] = in->keys[in_idx]; // simple swap of nodes key, value pairs
     out->values[out_idx] = in->values[in_idx];
 }
 
 void btree_node_free_shallow(btree_node *ctx) {
-    if (ctx) {
+    if (ctx) { // free single node if node not NULL
         free(ctx->children);
         free(ctx->keys);
         free(ctx->values);
