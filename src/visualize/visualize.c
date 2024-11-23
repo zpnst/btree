@@ -17,7 +17,7 @@ void construct_btree_dot_file(btree_node *node, FILE *output_file) {
     fprintf(output_file, "<f%d>\"];\n", node->keys_number);
 
     for (int iter = 0; iter <= node->keys_number; iter += 1) { 
-        if (iter >= node->childer_number) break; 
+        if (iter >= node->children_number) break; 
 
         if (node->children[iter]) {
             fprintf(output_file, "    \"node%p\":f%d -> \"node%p\";\n", (void *)node, iter, (void *)node->children[iter]);
@@ -71,7 +71,7 @@ void construct_btree_txt_file(btree_node *node, int indent, FILE *output_file) {
     }
     fprintf(output_file, "]\n");
 
-    if (node->childer_number) {
+    if (node->children_number) {
         for (int iter = 0; iter <= node->keys_number; iter += 1) {
             construct_btree_txt_file(node->children[iter], indent + 4, output_file);
         }

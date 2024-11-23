@@ -10,7 +10,7 @@ error_t btree_node_delete(btree_node *ctx, btree tree, int key) {
 
     if (idx < ctx->keys_number && ctx->keys[idx] == key) {
         // we found key to delete!
-        if (!ctx->childer_number) {
+        if (!ctx->children_number) {
             // so, key to delete present in leaf
             // .. left shift to cover up
             for (int jter = idx; jter < ctx->keys_number - 1; jter += 1) {
@@ -38,7 +38,7 @@ error_t btree_node_delete(btree_node *ctx, btree tree, int key) {
         }
     } else {
         // traverse to child
-        if (ctx->childer_number) {
+        if (ctx->children_number) {
             return btree_node_delete(ctx->children[idx], tree, key);
         } else {
             // no more children, faild to find target
@@ -52,7 +52,7 @@ void btree_node_rebalance(btree_node *ctx, btree tree, int key) {
 
     // we call it after deletion
 
-    if (!ctx->childer_number) { // recursion base
+    if (!ctx->children_number) { // recursion base
         // rebalancing takes place in parent
         return;
     }
@@ -90,7 +90,7 @@ void btree_node_rebalance(btree_node *ctx, btree tree, int key) {
         */
 
         // if we have a right sibling and sibling node have more than minumum number of keys
-        if (idx < ctx->childer_number - 1 && ctx->children[idx + 1]->keys_number > tree.min_degree - 1) { // yes, we have [(f, g, (), ())], 2 > 2 - 1
+        if (idx < ctx->children_number - 1 && ctx->children[idx + 1]->keys_number > tree.min_degree - 1) { // yes, we have [(f, g, (), ())], 2 > 2 - 1
             // case 1 --> Left Rotation
             // .. copy right separator to end of the deficient node
             btree_move_kv(ctx, idx, ctx->children[idx], ctx->children[idx]->keys_number);
@@ -148,10 +148,10 @@ void btree_node_rebalance(btree_node *ctx, btree tree, int key) {
                /   |               /   |  \
             */
 
-            if (ctx->children[idx]->childer_number) {
+            if (ctx->children[idx]->children_number) {
                 // move leftmost child
-                ctx->children[idx]->children[ctx->children[idx]->childer_number] = ctx->children[idx + 1]->children[0];
-                ctx->children[idx]->childer_number += 1;
+                ctx->children[idx]->children[ctx->children[idx]->children_number] = ctx->children[idx + 1]->children[0];
+                ctx->children[idx]->children_number += 1;
 
 
                 /*
@@ -162,11 +162,11 @@ void btree_node_rebalance(btree_node *ctx, btree tree, int key) {
                 */
 
                 // and we need to left shift children in the right sibling
-                for (int jter = 0; jter < ctx->children[idx + 1]->childer_number - 1; jter += 1) {
+                for (int jter = 0; jter < ctx->children[idx + 1]->children_number - 1; jter += 1) {
                     ctx->children[idx + 1]->children[jter] = ctx->children[idx + 1]->children[jter + 1];
                 }  
 
-                ctx->children[idx + 1]->childer_number -= 1;
+                ctx->children[idx + 1]->children_number -= 1;
 
                 /*
                                 [(    f    ,    b    ,    c    ,    d    )] 
@@ -202,15 +202,15 @@ void btree_node_rebalance(btree_node *ctx, btree tree, int key) {
 
             ctx->children[idx - 1]->keys_number -= 1;
 
-            if (ctx->children[idx]->childer_number) {
+            if (ctx->children[idx]->children_number) {
                 // right shift
-                for (int jter = ctx->children[idx]->childer_number; jter > 0; jter -= 1) {
+                for (int jter = ctx->children[idx]->children_number; jter > 0; jter -= 1) {
                     ctx->children[idx]->children[jter] = ctx->children[idx]->children[jter - 1];
                 }
-                ctx->children[idx]->childer_number += 1;
+                ctx->children[idx]->children_number += 1;
 
-                ctx->children[idx]->children[0] = ctx->children[idx - 1]->children[ctx->children[idx - 1]->childer_number - 1];
-                ctx->children[idx - 1]->childer_number -= 1;
+                ctx->children[idx]->children[0] = ctx->children[idx - 1]->children[ctx->children[idx - 1]->children_number - 1];
+                ctx->children[idx - 1]->children_number -= 1;
             }
             
         // merge! 
@@ -248,9 +248,9 @@ void btree_node_rebalance(btree_node *ctx, btree tree, int key) {
             } 
 
             // copy children from right merge node to left
-            for (int jter = 0; jter < right->childer_number; jter += 1) { 
-                left->children[left->childer_number] = right->children[jter];
-                left->childer_number += 1;
+            for (int jter = 0; jter < right->children_number; jter += 1) { 
+                left->children[left->children_number] = right->children[jter];
+                left->children_number += 1;
             } 
 
             /*
@@ -269,10 +269,10 @@ void btree_node_rebalance(btree_node *ctx, btree tree, int key) {
             ctx->keys_number -= 1;
 
             // left shift children in the ctx
-            for (int jter = left_idx + 1; jter < ctx->childer_number - 1; jter += 1) {
+            for (int jter = left_idx + 1; jter < ctx->children_number - 1; jter += 1) {
                 ctx->children[jter] = ctx->children[jter + 1];
             }
-            ctx->childer_number -= 1;
+            ctx->children_number -= 1;
 
             /*
                                  [(    b    ,    c    ,    d    ,    ()    )] <-- this is ctx node!

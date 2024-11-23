@@ -9,5 +9,5 @@ btree_node *btree_node_search(btree_node *ctx, int key, int *idx) {
         } 
     }
     // not found (if internal node, traverse to children)
-    return ctx->childer_number ? btree_node_search(ctx->children[*idx], key, idx) : NULL;
+    return ctx->children_number ? btree_node_search(ctx->children[*idx], key, idx) : NULL;
 }

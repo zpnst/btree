@@ -21,7 +21,7 @@ btree_node *btree_node_insert(btree_node *ctx, btree tree, int key, void *value)
     // did not find a kay in this node
     btree_node *result = NULL;
 
-    if (!ctx->childer_number) { // recursion base
+    if (!ctx->children_number) { // recursion base
 
         // leaf node
         if (ctx->keys_number == tree.degree - 1) { // EX: [(3, 5, 7)] <-- (10) 
@@ -70,7 +70,7 @@ btree_node *btree_node_insert(btree_node *ctx, btree tree, int key, void *value)
 
                 // right shift children
                 // .. also we need to shift each child too
-                for (int jter = ctx->childer_number; jter > iter + 1; jter -= 1) {
+                for (int jter = ctx->children_number; jter > iter + 1; jter -= 1) {
                     ctx->children[jter] = ctx->children[jter - 1];
                 }
 
@@ -90,7 +90,7 @@ btree_node *btree_node_insert(btree_node *ctx, btree tree, int key, void *value)
 
                 // update counter
                 ctx->keys_number += 1;
-                ctx->childer_number += 1;
+                ctx->children_number += 1;
             }
         }
     }
@@ -103,7 +103,7 @@ void btree_node_slpit(btree_node *ctx, btree tree, btree_node *new_node, int idx
 
     // whill set new node as the upshift element
 
-    int has_children = ctx->childer_number; // we need to determine that we have children
+    int has_children = ctx->children_number; // we need to determine that we have children
 
     btree_node *tmp_node = btree_new_node(tree);
 
@@ -262,15 +262,15 @@ void btree_node_slpit(btree_node *ctx, btree tree, btree_node *new_node, int idx
         }
 
         // update counters
-        new_node->children[0]->childer_number = tree.min_degree;
-        new_node->children[1]->childer_number = tree.degree - tree.min_degree + 1; // cos we slit this node by this parameters!
+        new_node->children[0]->children_number = tree.min_degree;
+        new_node->children[1]->children_number = tree.degree - tree.min_degree + 1; // cos we slit this node by this parameters!
    }
 
    // update keys counters
    new_node->children[0]->keys_number = tree.min_degree - 1;
    new_node->children[1]->keys_number = tree.degree - tree.min_degree; // ceilf function on the contrary
    new_node->keys_number = 1;
-   new_node->childer_number = 2;
+   new_node->children_number = 2;
 
    // ok! we just update new node pointer
 

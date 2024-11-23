@@ -18,13 +18,13 @@ void btree_node_free_shallow(btree_node *ctx) {
     }
 }
 btree_node *btree_node_get_inorder_predecessor(btree_node *ctx, int idx) {
-    if (ctx->childer_number) {
+    if (ctx->children_number) {
         btree_node *current = ctx->children[idx];
 
         // traverse to leaves
-        while (current->childer_number) {
+        while (current->children_number) {
             // traverse through last child
-            current = current->children[current->childer_number - 1];
+            current = current->children[current->children_number - 1];
         }
         // current contains inorder predecessor as the last key
         return current;

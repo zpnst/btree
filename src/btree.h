@@ -12,7 +12,7 @@ typedef enum {
 // BTREE NODE INSTANCE
 typedef struct btree_node {
     int keys_number;              // current number of pairs (key, value)
-    int childer_number;           // number of existing chidren (0 if leaf)
+    int children_number;           // number of existing chidren (0 if leaf)
     
     int *keys;                    // dynamic array of keys
     void **values;                // parallel array of values

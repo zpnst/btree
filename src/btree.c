@@ -51,7 +51,7 @@ void btree_delete(btree * tree, int key) {
         if (!tree->root->keys_number) { // tree will shrink if there are no keys in root
             btree_node *previous_root = tree->root;
             tree->root = NULL;
-            if (previous_root->childer_number) {
+            if (previous_root->children_number) {
                 // update root pointer
                 tree->root = previous_root->children[0];
             }
