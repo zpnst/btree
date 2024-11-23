@@ -151,7 +151,7 @@ Ubuntu, Debian
 sudo apt install graphviz
 ```
 
-Fedora, e.t,c
+Fedora, e.t.c
 ```bash
 sudo dnf install graphviz
 ```
