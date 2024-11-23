@@ -99,7 +99,7 @@ B-деревья(*или их производные*) используются 
 
 ```C
 struct user_info {
-   short int age; // да, для жизни хватит и short int =(, вообще и байта хватит(char), но я не хочу путать =) (да что уж там, даже signed char...)
+   short int age; // да, для жизни хватит и short int =(, вообще и байта хватит(char), но я не хочу ~~пугать~~ путать =) (да что уж там, даже signed char...)
    const char *first_name;
    const char *second_name;
 };
